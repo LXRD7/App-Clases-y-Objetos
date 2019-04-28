@@ -450,11 +450,13 @@ public class Ventana extends JFrame {
 				if(!registroUsuarios.estaVacio()) {
 					do {
 						String isbn=leer("Ingrese el ISBN del libro");
-						if (estante.existe(estante.buscarPosicion(isbn))) {
+						int posicionLibro = estante.buscarPosicion(isbn);
+						if (estante.existe(posicionLibro)) {
 							if(!registroPrestamos.existe(registroPrestamos.buscarPosicionLibro(isbn))) {
 								String numeroControl = leer("Ingresa el número de control del alumno");
-								if(registroUsuarios.existe(registroUsuarios.buscarPosicion(numeroControl))) {
-									Prestamo prestamo = new Prestamo(numeroControl,isbn);
+								int posicionAlumno = registroUsuarios.buscarPosicion(numeroControl);
+								if(registroUsuarios.existe(posicionAlumno)) {
+									Prestamo prestamo = new Prestamo(registroUsuarios.getUsuario(posicionAlumno),estante.getLibro(posicionLibro));
 									registroPrestamos.agregar(prestamo);
 									visualizar("Libro prestado con exito");
 								}
@@ -517,23 +519,10 @@ public class Ventana extends JFrame {
 	private class OyenteListarPrestamos implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
 			if(!registroPrestamos.estaVacio()) {
-				String mensaje = "";
-				String numeroControl = "";
-				String isbn = "";
-				for (Prestamo prestamo: registroPrestamos.getPrestamos()) {
-					numeroControl = prestamo.getNumeroControl();
-					isbn = prestamo.getIsbn();
-					mensaje += "\nNumero de Control: " + numeroControl +" Nombre del Alumno: "
-					+registroUsuarios.getUsuario(registroUsuarios.buscarPosicion(numeroControl)).getNombre()+
-					" ISBN: "+isbn+
-					" Titulo del Libro: " + estante.getLibro(estante.buscarPosicion(isbn)).getTitulo()+
-					" Nombre del Autor: " + estante.getLibro(estante.buscarPosicion(isbn)).getAutor();
-					
-				}
-				visualizar(mensaje);;
+				visualizar(registroPrestamos.toString());
 			}
 			else
-				visualizar("El regitrso de prestamos esta vacio");
+				visualizar("El registro de prestamos esta vacio");
 		}
 	}
 }

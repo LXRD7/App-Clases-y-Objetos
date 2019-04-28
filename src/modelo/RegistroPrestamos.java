@@ -30,7 +30,7 @@ public class RegistroPrestamos {
 	}
 	
 	public void renovarPrestamo(Prestamo prestamo) {
-		int posicion = buscarPosicionLibro(prestamo.getIsbn());
+		int posicion = buscarPosicionLibro(prestamo.getLibro().getIsbn());
 		prestamos[posicion] = prestamo;
 	}
 	
@@ -40,7 +40,7 @@ public class RegistroPrestamos {
 	
 	public int buscarPosicionAlumno(String numeroControl) {
 		for (int i=0;i<contador;i++) {
-			if (prestamos[i].getNumeroControl().equals(numeroControl)) {
+			if (prestamos[i].getAlumno().getNumeroControl().equals(numeroControl)) {
 				return i;
 			}
 		}
@@ -49,7 +49,7 @@ public class RegistroPrestamos {
 	
 	public int buscarPosicionLibro(String isbn) {
 		for (int i=0;i<contador;i++) {
-			if (prestamos[i].getIsbn().equals(isbn)) {
+			if (prestamos[i].getLibro().getIsbn().equals(isbn)) {
 				return i;
 			}
 		}
@@ -71,14 +71,13 @@ public class RegistroPrestamos {
 		prestamos[contador] = prestamos[contador+1];
 		contador--;
 	}
-	
+
 	@Override
 	public String toString() {
-		String salida = "Los libros prestados actualmente son\n";
+		String salida = "Los libros prestados son\n\n";
 		for (int i = 0; i < contador; i++) {
 			salida+=prestamos[i];
 		}
-		return salida;
-	}
+		return salida;	}
 	
 }
